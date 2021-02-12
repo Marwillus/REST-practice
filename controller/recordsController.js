@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+
 const Record = require("../models/recordSchema");
 
 exports.recordGetAll = (req, res, next) => {
@@ -22,6 +23,7 @@ exports.recordGetAll = (req, res, next) => {
       res.status(200).send(response);
     })
     .catch((err) => {
+      console.log("GET went wrong");
       next(err);
     });
 };
@@ -53,7 +55,7 @@ exports.recordPost = (req, res, next) => {
     artist: req.body.title,
     genre: req.body.genre,
     year: req.body.year,
-    image: req.body.image,
+    cover: req.body.cover,
     price: req.body.price,
   });
   album

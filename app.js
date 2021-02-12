@@ -6,6 +6,7 @@ var logger = require("morgan");
 
 var usersRouter = require("./routes/users");
 const recordsRouter = require("./routes/records");
+const ordersRouter = require("./routes/orders");
 
 var app = express();
 
@@ -25,14 +26,14 @@ app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
   res.header(
     "Access-Control-Allow-Headers",
-    "Origin, x-Requested-With, Content-Type, Accept"
+    "Origin, x-Requested-With, Content-Type, Accept, Authorization"
   );
   res.header("Access-Control-Allow-Methods", "POST, GET, PUT, DELETE, OPTIONS");
   next();
 });
 
 //Routen
-// app.use("/", indexRouter);
+app.use("/orders", ordersRouter);
 app.use("/users", usersRouter);
 app.use("/records", recordsRouter);
 

@@ -6,7 +6,9 @@ const RecordSchema = new mongoose.Schema({
   artist: { type: String, required: true },
   genre: { type: String, required: false },
   year: { type: Number, required: false },
-  image: { type: String, required: false },
+  cover: {
+    type: String,
+  },
   price: { type: Number, required: true },
 });
 
