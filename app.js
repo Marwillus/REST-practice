@@ -1,56 +1,54 @@
-//import express
-var express = require("express");
-var path = require("path");
-var cookieParser = require("cookie-parser");
-var logger = require("morgan");
+/** Externe Abhängigkeiten */
+const express = require("express");
+const path = require("path");
+const cookieParser = require("cookie-parser");
+const logger = require("morgan");
 
-var usersRouter = require("./routes/users");
+/** Import für die Datenbank vereinheitlicht */
+// const db = require("./db.js");
+
+//mongoose setup
+const connectMongo = require("./mongoDB");
+connectMongo();
+
+/** Routen */
+const indexRouter = require("./routes/index");
+const usersRouter = require("./routes/users");
 const recordsRouter = require("./routes/records");
-const ordersRouter = require("./routes/orders");
+const orderRouter = require("./routes/orders");
 
-var app = express();
+// error handling
+const { missingPath, errorResponse } = require("./errorHandling");
 
-//init MongoDB
-const connectDB = require("./initMongo");
-connectDB();
+/** Initialisierung */
+const app = express();
 
-//setup express
+/** Protokollierung aus NPM-Paket morgan */
 app.use(logger("dev"));
+
+/** Standard-Anfrage (Request) Parser von Express */
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+
+// Bevor ich die Routen-Middlewares hinzufüge,
+// packe ich die CORS Header via Middleware in jede Antwort (response).
+const corsHeader = require("./middleware/cors");
+app.use(corsHeader);
+
+/** Statisch ausgelieferte Dateien */
 app.use(express.static(path.join(__dirname, "public")));
 
-//CORS Middleware
-app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, x-Requested-With, Content-Type, Accept, Authorization"
-  );
-  res.header("Access-Control-Allow-Methods", "POST, GET, PUT, DELETE, OPTIONS");
-  next();
-});
-
-//Routen
-app.use("/orders", ordersRouter);
+/** Routen */
+app.use("/", indexRouter);
+// Nutzer / Aufnahmen / Bestellungen
 app.use("/users", usersRouter);
 app.use("/records", recordsRouter);
+app.use("/orders", orderRouter);
 
-//Fehlerbehandlung
-app.get("*", (req, res, next) => {
-  const error = createError(404, "Dieser Pfad exzestiert nicht");
-  next(error);
-});
-app.use((err, req, res, next) => {
-  console.log("Die Fehlermiddleware sagt: " + err);
-  res.status(err.statusCode);
-  res.send({
-    error: {
-      status: err.statusCode,
-      msg: err.message,
-    },
-  });
-});
+//errors
+app.get("*", missingPath);
+app.use(errorResponse);
 
+/** Export */
 module.exports = app;

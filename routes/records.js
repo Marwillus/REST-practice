@@ -1,24 +1,29 @@
-var express = require("express");
-var router = express.Router();
-//for image-upload
-const multer = require("multer");
-const upload = multer({ dest: "uploads/" });
+/* Router für meine Musikaufnahmen. Basis Pfad /records/ (aus App.js) */
+const express = require("express");
+const router = express.Router();
 
 const {
-  recordGetAll,
-  recordPost,
-  recordPutOne,
-  recordDeleteOne,
-  recordGetOne,
-} = require("../controller/recordsController");
+  recordsGetAllController,
+  recordsPostController,
+  recordsPutController,
+  recordsDeleteController,
+  recordsGetOneController,
+} = require("../controller/records-controller");
+const auth = require("../middleware/auth");
 
-/* GET users listing. */
-router.route("/").get(recordGetAll).post(upload.single("cover"), recordPost);
+// Verkürzte Schreibweise,
+// mehrere Methoden (GET/POST) für einen Endpunkt.
+router
+  .route("/")
+  .get(recordsGetAllController)
+  .post(auth, recordsPostController);
 
 router
+  // Hier definieren wir ein Stück Route mit Parameter.
+  // das nächste URL Segment nach /router/ wird in einen Parameter namens id eingelesen
   .route("/:id")
-  .get(recordGetOne)
-  .put(recordPutOne)
-  .delete(recordDeleteOne);
+  .get(recordsGetOneController)
+  .put(auth, recordsPutController)
+  .delete(auth, recordsDeleteController);
 
 module.exports = router;

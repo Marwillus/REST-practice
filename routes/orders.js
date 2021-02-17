@@ -1,17 +1,26 @@
-var express = require("express");
-var router = express.Router();
+/* Router für meine Bestellungen. Basis Pfad /orders/ (aus App.js) */
+const express = require('express');
+const router = express.Router();
 
 const {
-  orderGetAll,
-  orderPost,
-  orderGetOne,
-  orderPutOne,
-  orderDeleteOne,
-} = require("../controller/orderController");
+	ordersGetAllController,
+	ordersPostController,
+	ordersPutController,
+	ordersDeleteController,
+	ordersGetOneController
+} = require('../controller/orders-controller');
 
-/* GET users listing. */
-router.route("/").get(orderGetAll).post(orderPost);
+router
+	.route('/')
+	.get(ordersGetAllController)
+	.post(ordersPostController);
 
-router.route("/:id").get(orderGetOne).put(orderPutOne).delete(orderDeleteOne);
+router
+	// Route mit Parameter.
+	// das nächste URL Segment nach /orders/ wird in res.param.id verfügbar
+	.route('/:id')
+	.get(ordersGetOneController)
+	.put(ordersPutController)
+	.delete(ordersDeleteController);
 
 module.exports = router;

@@ -1,0 +1,67 @@
+{
+  "records": [
+    {
+      "id": 0,
+      "title": "Larson - Watsica",
+      "genre": "Stage And Screen",
+      "year": "2020-04-29T14:38:16.686Z"
+    },
+    {
+      "id": 1,
+      "title": "Dicki - Thiel",
+      "genre": "Blues",
+      "year": "2020-12-30T22:18:22.375Z"
+    },
+    {
+      "id": 2,
+      "title": "Bayer, Conn and King",
+      "genre": "Funk",
+      "year": "2020-06-25T16:04:35.935Z"
+    },
+    {
+      "id": 3,
+      "title": "Volkman, Kling and Hane",
+      "genre": "Non Music",
+      "year": "2020-12-19T16:36:18.936Z"
+    },
+    {
+      "id": 4,
+      "title": "Wisoky and Sons",
+      "genre": "Electronic",
+      "year": "2020-11-22T11:11:24.413Z"
+    }
+  ],
+  "users": [
+    {
+      "id": 0,
+      "firstname": "Shayne",
+      "lastname": "Beahan",
+      "title": "Global Tactics Architect"
+    },
+    {
+      "id": 1,
+      "firstname": "Rogelio",
+      "lastname": "Bailey",
+      "title": "Direct Interactions Analyst"
+    },
+    {
+      "id": 2,
+      "firstname": "Angus",
+      "lastname": "Hegmann",
+      "title": "Future Solutions Liaison"
+    },
+    {
+      "id": 3,
+      "firstname": "Sandrine",
+      "lastname": "Nienow",
+      "title": "Central Directives Producer"
+    },
+    {
+      "id": 4,
+      "firstname": "Khalid",
+      "lastname": "Sipes",
+      "title": "International Intranet Orchestrator"
+    }
+  ],
+  "orders": []
+}

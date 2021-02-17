@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Musikladen - Aufnahme anlegen</title>
+</head>
+
+<body>
+    <form method="post" action="http://localhost:3001/records">
+        <input type="text" placeholder="Band" name="band">
+        <input type="text" placeholder="Titel" name="titel">
+        <input type="text" placeholder="Jahr" name="jahr">
+        <button type="submit">Anlegen</button>
+        <button id="ajax" type="button">Mit AJAX</button>
+    </form>
+    <p id="ergebnis"></p>
+    <script>
+        document.querySelector("#ajax").addEventListener('click', (event) => {
+            event.preventDefault();
+            const band = document.querySelector("input[name=band]").value;
+            const titel = document.querySelector("input[name=titel").value;
+            const jahr = document.querySelector("input[name=jahr").value;
+            const ausgabe = document.querySelector("#ergebnis");
+
+            const daten = { band: band, titel: titel, jahr: jahr };
+
+            fetch('http://localhost:3001/records', {
+                method: 'POST', // or 'PUT'
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(daten),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Erfolg:', data);
+                    ausgabe.innerText = data;
+                })
+                .catch((error) => {
+                    console.error('Fehlschlag:', error);
+                    ausgabe.innerText = error;
+                });
+
+        });
+    </script>
+</body>
+
+</html>
