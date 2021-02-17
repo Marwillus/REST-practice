@@ -1,50 +1,51 @@
-// Vereinheitlicht Datenbank
-const db = require("../db.js");
+const Order = require("../models/order-model");
 
 exports.ordersGetAllController = (req, res, next) => {
   //res.send('ich zeige alle Bestellungen des Ladens als Array');
-  const bestellungen = db.get("orders").value();
+  const bestellungen = Orders.find();
   res.status(200).send(bestellungen);
 };
 
-exports.ordersPostController = (req, res, next) => {
+exports.ordersPostController = async (req, res, next) => {
   //res.send("Eine neue Bestellung speichern.")
-  const bestellung = req.body;
-  console.log("Body: ", req.body);
-  db.get("orders")
-    .push(bestellung)
-    .last()
-    .assign({ id: Date.now().toString() })
-    .write();
-  res.status(200).send(bestellung);
+  try {
+    const bestellung = req.body;
+    const newOrder = await Order.create(bestellung);
+    res.status(200).send(bestellung);
+  } catch (err) {
+    next(err);
+  }
 };
 
-exports.ordersGetOneController = (req, res, next) => {
-  // id aus dem URL-Segment über destrukturierung rausholen.
-  const { id } = req.params;
-  //res.send('gebe nur das eine Bestellung zurück mit ID:' + id);
-  const bestellung = db.get("orders").find({ id });
-  res.status(200).send(bestellung);
+exports.ordersGetOneController = async (req, res, next) => {
+  try {
+    const bestellung = req.body;
+    const order = Order.findById(bestellung._id);
+    res.status(200).send(order);
+  } catch (err) {
+    next(err);
+  }
 };
 
-exports.ordersPutController = (req, res, next) => {
-  // das Segment nach /orders/ ist meine ID zum ändern
-  // z.b: localhost:3001/orders/1235 => req.params.id = 1235
-
-  // id aus dem URL-Segment über destrukturierung rausholen.
-  const { id } = req.params;
-  const neueWerte = req.body;
-  const bestellung = db.get("orders").find({ id }).assign(neueWerte).write();
-  res.status(200).send(bestellung);
-  //	res.send('ich ändere die Bestellung mit ID:' + id);
+exports.ordersPutController = async (req, res, next) => {
+  try {
+    const bestellung = req.body;
+    const updateOrder = await Order.findOneAndUpdate({ _id: bestellung._id });
+    res.status(200).send(updateOrder);
+  } catch (err) {
+    next(err);
+  }
 };
 
-exports.ordersDeleteController = (req, res, next) => {
-  const { id } = req.params;
-  //res.send('ich lösche die Bestellung mit ID:' + id);
-
-  const order = db.get("orders").remove({ id }).write();
-  res.status(200).send(order);
+exports.ordersDeleteController = async (req, res, next) => {
+  try {
+    const bestellung = req.body;
+    console.log("Body: ", req.body);
+    const delOrder = await Order.findByIdAndRemove({ _id: bestellung._id });
+    res.status(200).send("delete complete" + delOrder);
+  } catch (err) {
+    next(err);
+  }
 };
 
 //module.exports = { ordersGetAllController, ordersPostController, ordersGetOneController, ordersPutController, ordersDeleteController };

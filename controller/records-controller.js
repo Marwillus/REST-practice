@@ -1,6 +1,3 @@
-// Vereinheitlicht Datenbank
-const db = require("../db");
-
 const Record = require("../models/record-model");
 const mongoose = require("mongoose");
 
